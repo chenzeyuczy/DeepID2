@@ -1,0 +1,12 @@
+# Temp file
+*.swo
+*.swp
+*.pyc
+tem*
+
+# Output file
+result/
+
+# Test file
+test/
+*.txt

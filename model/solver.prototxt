@@ -1,0 +1,19 @@
+net: "model/deploy.prototxt"
+test_iter: 100
+test_interval: 500
+
+base_lr: 0.01
+momentum: 0.9
+weight_decay: 0.0000
+
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+
+display: 100
+max_iter: 50000
+snapshot: 5000
+snapshot_prefix: "model/deepid2"
+
+solver_mode: GPU
+
