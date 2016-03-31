@@ -10,3 +10,6 @@ result/
 # Test file
 test/
 *.txt
+
+# Model data
+*.caffemodel

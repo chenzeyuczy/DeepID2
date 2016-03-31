@@ -53,7 +53,6 @@ class Container():
 		label_num = len(labels)
 		class_num = self.__dataset.getClassNum()
 		label_info = np.zeros((label_num, class_num), dtype = np.float32)
-		print label_info.shape
 		for i in xrange(label_num):
 			label = labels[i]
 			label_info[i, label] = 1

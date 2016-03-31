@@ -1,6 +1,4 @@
 net: "model/deploy.prototxt"
-test_iter: 100
-test_interval: 500
 
 base_lr: 0.01
 momentum: 0.9
@@ -10,10 +8,11 @@ lr_policy: "inv"
 gamma: 0.0001
 power: 0.75
 
-display: 100
+display: 1
 max_iter: 50000
-snapshot: 5000
-snapshot_prefix: "model/deepid2"
+snapshot: 10
+snapshot_prefix: "result/deepid2"
+snapshot_diff: true
 
 solver_mode: GPU
 
