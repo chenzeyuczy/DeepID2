@@ -8,7 +8,7 @@ layer {
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
-		param_str: '{ "dataset": "/home/chenzeyu/dataset/lfw-deepfunneled", "split_ratio": 0.7, "selected_partition": 1, "batch_size": 300 }'
+		param_str: '{ "dataset": "/home/chenzeyu/dataset/lfw-cropped", "split_ratio": 0.7, "selected_partition": 1, "batch_size": 100 }'
 	}
 }
 
@@ -208,6 +208,14 @@ layer {
 	bottom: "concat"
 	top: "deepid"
 	inner_product_param {
+		weight_filler {
+			type: "gaussian"
+			std: 0.01
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
 		num_output: 160
 	}
 }
@@ -225,6 +233,14 @@ layer {
 	top: "fc"
 	inner_product_param {
 		num_output: 5749
+		weight_filler {
+			type: "gaussian"
+			std: 0.01
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
 	}
 }
 

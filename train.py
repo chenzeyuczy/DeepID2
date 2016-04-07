@@ -9,13 +9,13 @@ from dataset import Dataset
 
 caffe.set_mode_gpu()
 
-#dataset = Dataset("/home/chenzeyu/dataset/lfw-deepfunneled")
-#split_ratio = 0.01
-#dataset.split(split_ratio)
-#dataset.setPartition(1)
+# dataset = Dataset("/home/chenzeyu/dataset/lfw-deepfunneled")
+# split_ratio = 0.01
+# dataset.split(split_ratio)
+# dataset.setPartition(1)
 #
-#container = Container(dataset)
-#container.setBatchSize(100)
+# container = Container(dataset)
+# container.setBatchSize(100)
 
 model = "./model/solver.prototxt"
 solver = caffe.SGDSolver(model)
@@ -23,9 +23,6 @@ solver = caffe.SGDSolver(model)
 weights = "./model/bvlc_reference_caffenet.caffemodel"
 # solver.net.copy_from("bvlc_reference_caffenet.caffemodel")
 
-model = "./model/deploy.prototxt"
-#net = caffe.Net(model, 0)
-
-#for i in xrange(5):
-#	solver.step(10)
+for i in xrange(10):
+	solver.step(50)
 

@@ -24,7 +24,7 @@ class DataLayer(caffe.Layer):
 		container.setBatchSize(batch_size)
 		self.__data = container
 
-		top[0].reshape(1, 3, 250, 250)
+		top[0].reshape(1, 3, 150, 150)
 		top[1].reshape(1, 5749)
 		pass
 
