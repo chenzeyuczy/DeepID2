@@ -25,7 +25,7 @@ class DataLayer(caffe.Layer):
 		self.__data = container
 
 		top[0].reshape(1, 3, 150, 150)
-		top[1].reshape(1, 5749)
+		top[1].reshape(1, 1)
 		pass
 
 	def reshape(self, bottom, top):

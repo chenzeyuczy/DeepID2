@@ -23,6 +23,6 @@ solver = caffe.SGDSolver(model)
 weights = "./model/bvlc_reference_caffenet.caffemodel"
 # solver.net.copy_from("bvlc_reference_caffenet.caffemodel")
 
-for i in xrange(10):
+for i in xrange(100):
 	solver.step(50)
 

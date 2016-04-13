@@ -35,6 +35,7 @@ class Container():
 		return (data_info, label_info)
 
 	def getNextIndex(self):
+		# Check whether it comes to the begining.
 		if self.__cur_idx == 0:
 			self.__per_idx = np.random.permutation(self.__num_sample)
 		idx = self.__per_idx[self.__cur_idx]
@@ -52,10 +53,12 @@ class Container():
 	def convertLabel(self, labels):
 		label_num = len(labels)
 		class_num = self.__dataset.getClassNum()
-		label_info = np.zeros((label_num, class_num), dtype = np.float32)
-		for i in xrange(label_num):
-			label = labels[i]
-			label_info[i, label] = 1
+		#label_info = np.zeros((label_num, class_num), dtype = np.float32)
+		#for i in xrange(label_num):
+		#	label = labels[i]
+		#	label_info[i, label] = 1
+		label_info = np.array(labels)
+		label_info = label_info.reshape(label_num, 1)
 		return label_info
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ layer {
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
-		param_str: '{ "dataset": "/home/chenzeyu/dataset/lfw-cropped", "split_ratio": 0.7, "selected_partition": 1, "batch_size": 100 }'
+		param_str: '{ "dataset": "/home/chenzeyu/dataset/lfw-cropped", "split_ratio": 1.0, "selected_partition": 1, "batch_size": 100 }'
 	}
 }
 
@@ -226,36 +226,36 @@ layer {
 	bottom: "deepid"
 }
 
+#layer {
+#	name: "fc"
+#	type: "InnerProduct"
+#	bottom: "deepid"
+#	top: "fc"
+#	inner_product_param {
+#		num_output: 5749
+#		weight_filler {
+#			type: "gaussian"
+#			std: 0.01
+#		}
+#		bias_filler {
+#			type: "constant"
+#			value: 0
+#		}
+#	}
+#}
+
+#layer {
+#	name: "id"
+#	type: "Softmax"
+#	bottom: "fc"
+#	top: "id"
+#}
+
 layer {
-	name: "fc"
-	type: "InnerProduct"
+	name: "loss"
+	type: "SoftmaxWithLoss"
 	bottom: "deepid"
-	top: "fc"
-	inner_product_param {
-		num_output: 5749
-		weight_filler {
-			type: "gaussian"
-			std: 0.01
-		}
-		bias_filler {
-			type: "constant"
-			value: 0
-		}
-	}
-}
-
-layer {
-	name: "id"
-	type: "Softmax"
-	bottom: "fc"
-	top: "id"
-}
-
-layer {
-	name: "loss1"
-	type: "SigmoidCrossEntropyLoss"
-	bottom: "id"
 	bottom: "label"
-	top: "loss1"
+	top: "loss"
 	loss_weight: 1
 }
