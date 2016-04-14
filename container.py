@@ -47,6 +47,14 @@ class Container():
 		if size:
 			img = img.resize(size)
 		img = np.array(img, dtype = np.float64)
+		# Extend image dimension in case of gray mode.
+		if len(img.shape) == 2:
+			w, h = img.shape
+			img_tem = np.empty((w, h, 3))
+			img_tem[:,:,0] = img
+			img_tem[:,:,1] = img
+			img_tem[:,:,2] = img
+			img = img_tem
 		img = img.transpose(2, 0, 1)
 		return img
 

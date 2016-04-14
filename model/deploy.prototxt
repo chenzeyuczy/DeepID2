@@ -8,7 +8,7 @@ layer {
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
-		param_str: '{ "dataset": "/home/chenzeyu/dataset/lfw-cropped", "split_ratio": 1.0, "selected_partition": 1, "batch_size": 100 }'
+		param_str: '{ "dataset": "/home/chenzeyu/dataset/CASIA/CASIA-WebFace", "split_ratio": 0.3, "selected_partition": 1, "batch_size": 100 }'
 	}
 }
 
@@ -244,12 +244,26 @@ layer {
 #	}
 #}
 
-#layer {
-#	name: "id"
-#	type: "Softmax"
-#	bottom: "fc"
-#	top: "id"
-#}
+layer {
+	name: "id"
+	type: "Softmax"
+	bottom: "deepid"
+	top: "id"
+	include: {
+		phase: TEST
+	}
+}
+
+layer {
+	name: "accuracy"
+	type: "Accuracy"
+	bottom: "id"
+	bottom: "label"
+	top: "accuracy"
+	include: {
+		phase: TEST
+	}
+}
 
 layer {
 	name: "loss"
@@ -258,4 +272,7 @@ layer {
 	bottom: "label"
 	top: "loss"
 	loss_weight: 1
+	include: {
+		phase: TRAIN
+	}
 }
