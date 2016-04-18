@@ -5,7 +5,6 @@ import numpy as np
 import setup, caffe
 
 from container import Container
-from dataset import Dataset
 
 caffe.set_mode_gpu()
 
@@ -20,9 +19,9 @@ caffe.set_mode_gpu()
 model = "./model/solver.prototxt"
 solver = caffe.SGDSolver(model)
 
-weights = "./model/bvlc_reference_caffenet.caffemodel"
-# solver.net.copy_from("bvlc_reference_caffenet.caffemodel")
+weights = "./result/deepid2_iter_10000.caffemodel"
+#solver.net.copy_from("bvlc_reference_caffenet.caffemodel")
 
 for i in xrange(100):
-	solver.step(50)
+	solver.step(100)
 

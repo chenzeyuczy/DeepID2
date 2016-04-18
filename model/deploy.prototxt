@@ -8,7 +8,7 @@ layer {
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
-		param_str: '{ "dataset": "/home/chenzeyu/dataset/CASIA/CASIA-WebFace", "split_ratio": 0.3, "selected_partition": 1, "batch_size": 100 }'
+		param_str: '{ "data_file": "./data/test_set.txt", "batch_size": 100 }'
 	}
 }
 
@@ -18,12 +18,12 @@ layer {
 	top: "conv1"
 	bottom: "data"
 	param {
-		lr_mult: 2
-		decay_mult: 0.1
+		lr_mult: 1
+		decay_mult: 1
 	}
 	param {
 		lr_mult: 2
-		decay_mult: 0.1
+		decay_mult: 0
 	}
 	convolution_param {
 		num_output: 20
@@ -62,12 +62,12 @@ layer {
 	top: "conv2"
 	bottom: "pool1"
 	param {
-		lr_mult: 2
-		decay_mult: 0.1
+		lr_mult: 1
+		decay_mult: 1
 	}
 	param {
 		lr_mult: 2
-		decay_mult: 0.1
+		decay_mult: 0
 	}
 	convolution_param {
 		num_output: 40
@@ -106,12 +106,12 @@ layer {
 	top: "conv3"
 	bottom: "pool2"
 	param {
-		lr_mult: 2
-		decay_mult: 0.1
+		lr_mult: 1
+		decay_mult: 1
 	}
 	param {
 		lr_mult: 2
-		decay_mult: 0.1
+		decay_mult: 0
 	}
 	convolution_param {
 		num_output: 60
@@ -150,12 +150,12 @@ layer {
 	top: "conv4"
 	bottom: "pool3"
 	param {
-		lr_mult: 2
-		decay_mult: 0.1
+		lr_mult: 1
+		decay_mult: 1
 	}
 	param {
 		lr_mult: 2
-		decay_mult: 0.1
+		decay_mult: 0
 	}
 	convolution_param {
 		num_output: 80
@@ -179,22 +179,22 @@ layer {
 }
 
 layer {
-	name: "flatten1"
+	name: "flatten_poo31"
 	type: "Flatten"
 	bottom: "pool3"
-	top: "flatten1"
+	top: "flatten_pool3"
 }
 layer {
-	name: "flatten2"
+	name: "flatten_conv4"
 	type: "Flatten"
 	bottom: "conv4"
-	top: "flatten2"
+	top: "flatten_conv4"
 }
 layer {
 	name: "concat"
 	type: "Concat"
-	bottom: "flatten1"
-	bottom: "flatten2"
+	bottom: "flatten_pool3"
+	bottom: "flatten_conv4"
 	top: "concat"
 	concat_param {
 		axis: 1
@@ -207,6 +207,14 @@ layer {
 	type: "InnerProduct"
 	bottom: "concat"
 	top: "deepid"
+	param {
+		lr_mult: 1
+		decay_mult: 1
+	}
+	param {
+		lr_mult: 2
+		decay_mult: 0
+	}
 	inner_product_param {
 		weight_filler {
 			type: "gaussian"
@@ -226,23 +234,31 @@ layer {
 	bottom: "deepid"
 }
 
-#layer {
-#	name: "fc"
-#	type: "InnerProduct"
-#	bottom: "deepid"
-#	top: "fc"
-#	inner_product_param {
-#		num_output: 5749
-#		weight_filler {
-#			type: "gaussian"
-#			std: 0.01
-#		}
-#		bias_filler {
-#			type: "constant"
-#			value: 0
-#		}
-#	}
-#}
+layer {
+	name: "fc"
+	type: "InnerProduct"
+	bottom: "deepid"
+	top: "fc"
+	param {
+		lr_mult: 1
+		decay_mult: 1
+	}
+	param {
+		lr_mult: 2
+		decay_mult: 0
+	}
+	inner_product_param {
+		num_output: 3173
+		weight_filler {
+			type: "gaussian"
+			std: 0.01
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
+	}
+}
 
 layer {
 	name: "id"
@@ -268,11 +284,8 @@ layer {
 layer {
 	name: "loss"
 	type: "SoftmaxWithLoss"
-	bottom: "deepid"
+	bottom: "fc"
 	bottom: "label"
 	top: "loss"
 	loss_weight: 1
-	include: {
-		phase: TRAIN
-	}
 }

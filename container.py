@@ -3,14 +3,13 @@
 
 import numpy as np
 from PIL import Image
-from dataset import Dataset
 
 class Container():
 
-	def __init__(self, dataset):
+	def __init__(self, data_file):
+		self.parseFile(data_file)
 		self.__batch_size = 10
-		self.__dataset = dataset
-		self.__num_sample = len(dataset)
+		self.__num_sample = len(self.__info)
 		self.__per_idx = None
 		self.__cur_idx = 0
 		pass
@@ -26,9 +25,12 @@ class Container():
 		data_list = []
 		labels = []
 		for i in xrange(self.__batch_size):
-			idx = self.getNextIndex()
-			(img_path, label) = self.__dataset[idx]
-			data_list.append(self.loadImage(img_path))
+			img_data = None
+			while img_data == None:
+				idx = self.getNextIndex()
+				(img_path, label) = self.__info[idx]
+				img_data = self.loadImage(img_path)
+			data_list.append(img_data)
 			labels.append(label)
 		data_info = np.array(data_list)
 		label_info = self.convertLabel(labels)
@@ -43,10 +45,14 @@ class Container():
 		return idx
 
 	def loadImage(self, img_path, size = None):
-		img = Image.open(img_path)
+		try:
+			img = Image.open(img_path)
+			img = np.array(img, dtype = np.float32)
+		except:
+			print "Error occur"
+			return None
 		if size:
 			img = img.resize(size)
-		img = np.array(img, dtype = np.float64)
 		# Extend image dimension in case of gray mode.
 		if len(img.shape) == 2:
 			w, h = img.shape
@@ -60,23 +66,23 @@ class Container():
 
 	def convertLabel(self, labels):
 		label_num = len(labels)
-		class_num = self.__dataset.getClassNum()
-		#label_info = np.zeros((label_num, class_num), dtype = np.float32)
-		#for i in xrange(label_num):
-		#	label = labels[i]
-		#	label_info[i, label] = 1
 		label_info = np.array(labels)
 		label_info = label_info.reshape(label_num, 1)
 		return label_info
 
-if __name__ == '__main__':
-	dataset_path = '/home/chenzeyu/dataset/lfw-deepfunneled'
-	dataset = Dataset(dataset_path)
-	split_ratio = 0.1
-	dataset.split(split_ratio)
-	dataset.setPartition(1)
+	def parseFile(self, datafile):
+		# Store info as a format of [src_path, label].
+		self.__info = []
+		with open(datafile, 'r') as f:
+			for line in f:
+				item = line.strip().split()
+				assert len(item) == 2
+				self.__info.append(item)
 
-	container = Container(dataset)
+if __name__ == '__main__':
+	data_file = './data/train_set.txt'
+
+	container = Container(data_file)
 	container.setBatchSize(100)
 	batch = container.next()
 
