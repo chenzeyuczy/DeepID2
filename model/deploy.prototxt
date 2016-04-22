@@ -8,7 +8,7 @@ layer {
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
-		param_str: '{ "data_file": "./data/test_set.txt", "batch_size": 100 }'
+		param_str: '{ "data_file": "./data/train_set.txt", "batch_size": 100 }'
 	}
 }
 
@@ -248,7 +248,7 @@ layer {
 		decay_mult: 0
 	}
 	inner_product_param {
-		num_output: 3173
+		num_output: 3172
 		weight_filler {
 			type: "gaussian"
 			std: 0.01
@@ -263,11 +263,11 @@ layer {
 layer {
 	name: "id"
 	type: "Softmax"
-	bottom: "deepid"
+	bottom: "fc"
 	top: "id"
-	include: {
-		phase: TEST
-	}
+#	include: {
+#		phase: TEST
+#	}
 }
 
 layer {
@@ -276,9 +276,9 @@ layer {
 	bottom: "id"
 	bottom: "label"
 	top: "accuracy"
-	include: {
-		phase: TEST
-	}
+#	include: {
+#		phase: TEST
+#	}
 }
 
 layer {

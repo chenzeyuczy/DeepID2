@@ -58,9 +58,9 @@ class Dataset:
 	pass
 
 if __name__ == '__main__':
-	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-WebFace'
+	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
 	dataset = Dataset(dataset_root)
-	split_ratio = 0.7
+	split_ratio = 0.3
 	dataset.split(split_ratio)
 	train_file = './data/train_set.txt'
 	test_file = './data/test_set.txt'

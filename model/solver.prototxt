@@ -1,7 +1,7 @@
 net: "model/deploy.prototxt"
 
-test_iter: 100
-test_interval: 500
+#test_iter: 100
+#test_interval: 1000
 
 base_lr: 0.01
 momentum: 0.9
@@ -9,10 +9,10 @@ weight_decay: 0.0005
 
 lr_policy: "step"
 gamma: 0.95
-stepsize: 1000
+stepsize: 10000
 #power: 0.75
 
-display: 10
+display: 100
 max_iter: 50000
 snapshot: 1000
 snapshot_prefix: "result/deepid2"
