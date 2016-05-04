@@ -11,12 +11,12 @@ caffe.set_mode_gpu()
 model = "./model/solver.prototxt"
 solver = caffe.SGDSolver(model)
 
-weights = "./result/deepid2_iter_1000.caffemodel"
-state = "./result/deepid2_iter_1000.solversate"
+last_iter_time = str(19000)
+weights = "./result/deepid2_iter_" + last_iter_time + ".caffemodel"
+state = "./result/deepid2_iter_" + last_iter_time + ".solverstate"
 #solver.net.copy_from(weights)
-#solver.net.restore(state)
+#solver.restore(state)
 
-#solver.forward()
-for i in xrange(500):
-	solver.step(1000)
+for i in xrange(1000):
+	solver.step(100)
 

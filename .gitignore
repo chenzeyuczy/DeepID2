@@ -6,6 +6,7 @@ tem*
 
 # Output file
 result/
+log/
 
 # Test file
 test/
@@ -14,3 +15,4 @@ test/
 
 # Model data
 *.caffemodel
+*.solverstate

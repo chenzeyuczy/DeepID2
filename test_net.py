@@ -1,15 +1,19 @@
 #! /usr/bin/python
 #-*- coding:utf-8 -*-
 
+import numpy as np
 import setup, caffe
-import layer.data_layer
 
-deploy_file = "./model/deploy.prototxt"
+from container import Container
 
-weights = "./result/deepid2_iter_1000.caffemodel"
-net = caffe.Net(deploy_file, 0)
-net.copy_from(weights)
+caffe.set_mode_gpu()
 
-net.forward()
-ids = np.argmax(net.blobs['id'].data, axis = 1)
-labels = net.blobs['label']
+model = "./model/solver.prototxt"
+solver = caffe.SGDSolver(model)
+
+last_iter_time = str(100000)
+weights = "./result/deepid2_iter_" + last_iter_time + ".caffemodel"
+state = "./result/deepid2_iter_" + last_iter_time + ".solverstate"
+solver.net.copy_from(weights)
+solver.restore(state)
+
