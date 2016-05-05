@@ -4,7 +4,7 @@ layer {
 	type: "Python"
 	top: "data"
 	top: "label"
-#	top: "pair"
+	top: "pair"
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
@@ -290,30 +290,30 @@ layer {
 	loss_weight: 1
 }
 
-#layer {
-#	name: "split"
-#	type: "Python"
-#	bottom: "deepid"
-#	bottom: "pair"
-#	top: "feat1"
-#	top: "feat2"
-#	top: "sim"
-#	python_param {
-#		module: "layer.split_layer"
-#		layer: "SplitLayer"
-#	}
-#}
-#
-#layer {
-#	name: "contrastive"
-#	type: "ContrastiveLoss"
-#	bottom: "feat1"
-#	bottom: "feat2"
-#	bottom: "sim"
-#	top: "contrastive_loss"
-#	contrastive_loss_param {
-#		margin: 1
-#	}
-#	loss_weight: 0.05
-#}
-#
+layer {
+	name: "split"
+	type: "Python"
+	bottom: "deepid"
+	bottom: "pair"
+	top: "feat1"
+	top: "feat2"
+	top: "sim"
+	python_param {
+		module: "layer.split_layer"
+		layer: "SplitLayer"
+	}
+}
+
+layer {
+	name: "contrastive"
+	type: "ContrastiveLoss"
+	bottom: "feat1"
+	bottom: "feat2"
+	bottom: "sim"
+	top: "contrastive_loss"
+	contrastive_loss_param {
+		margin: 1
+	}
+	loss_weight: 0.05
+}
+
