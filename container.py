@@ -24,14 +24,16 @@ class Container():
 	def next(self):
 		data_list = []
 		labels = []
-		for i in xrange(self.__batch_size):
-			img_data = None
-			while img_data == None:
-				idx = self.getNextIndex()
-				(img_path, label) = self.__info[idx]
-				img_data = self.loadImage(img_path)
-			data_list.append(img_data)
-			labels.append(label)
+		for i in xrange(self.__batch_size / 2):
+			idx = self.getNextIndex()
+			(path1, label1, path2, label2) = self.__info[idx]
+			data1 = self.loadImage(path1)
+			data2 = self.loadImage(path2)
+			data_list.append(data1)
+			labels.append(label1)
+			data_list.append(data2)
+			labels.append(label2)
+		# Format transformation.
 		data_info = np.array(data_list)
 		label_info = self.convertLabel(labels)
 		return (data_info, label_info)
@@ -49,7 +51,7 @@ class Container():
 			img = Image.open(img_path)
 			img = np.array(img, dtype = np.float32)
 		except:
-			print "Error occur"
+			print "Error occur when trying to load", img_path
 			return None
 		if size:
 			img = img.resize(size)
@@ -76,13 +78,19 @@ class Container():
 		with open(datafile, 'r') as f:
 			for line in f:
 				item = line.strip().split()
-				assert len(item) == 2
+				assert len(item) == 4
 				self.__info.append(item)
+			f.close()
 
 if __name__ == '__main__':
 	data_file = './data/train_set.txt'
+	data_file = './preprocess/sample_mix.txt'
 
 	container = Container(data_file)
 	container.setBatchSize(100)
 	batch = container.next()
+
+	for item in batch:
+		print item
+		print item.shape
 

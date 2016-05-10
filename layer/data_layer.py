@@ -32,12 +32,12 @@ class DataLayer(caffe.Layer):
 		(N, C, W, H) = data.shape
 		(N, K) = label.shape
 
-		pair_num = int(np.sqrt(N ** 2 / 2))
+		pair_num = N / 2
 		pair_info = np.empty((pair_num, 3), dtype = np.float32)
-		id_pair = np.random.randint(0, N, (pair_num, 2))
-		pair_info[:, :2] = id_pair
+		idx_pair = np.arange(N).reshape(pair_num, 2)
+		pair_info[:, :2] = idx_pair
 		for i in xrange(pair_num):
-			pair_info[i, 2] = label[id_pair[i, 0]] == label[id_pair[i, 1]]
+			pair_info[i, 2] = label[idx_pair[i, 0]] == label[idx_pair[i, 1]]
 
 		top[0].reshape(N, C, W, H)
 		top[0].data[...] = data

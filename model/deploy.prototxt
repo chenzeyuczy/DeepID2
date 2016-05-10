@@ -8,7 +8,7 @@ layer {
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
-		param_str: '{ "data_file": "./data/train_set.txt", "batch_size": 100 }'
+		param_str: '{ "data_file": "./data/sample_mix.txt", "batch_size": 100 }'
 	}
 }
 
@@ -248,7 +248,7 @@ layer {
 		decay_mult: 0
 	}
 	inner_product_param {
-		num_output: 6345
+		num_output: 10575
 		weight_filler {
 			type: "gaussian"
 			std: 0.01
@@ -265,9 +265,6 @@ layer {
 	type: "Softmax"
 	bottom: "fc"
 	top: "id"
-#	include: {
-#		phase: TEST
-#	}
 }
 
 layer {
@@ -288,6 +285,9 @@ layer {
 	bottom: "label"
 	top: "loss"
 	loss_weight: 1
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
@@ -302,6 +302,9 @@ layer {
 		module: "layer.split_layer"
 		layer: "SplitLayer"
 	}
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
@@ -315,5 +318,8 @@ layer {
 		margin: 1
 	}
 	loss_weight: 0.05
+	include: {
+		phase: TRAIN
+	}
 }
 

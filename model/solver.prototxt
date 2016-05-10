@@ -8,13 +8,13 @@ momentum: 0.9
 weight_decay: 0.0005
 
 lr_policy: "step"
-gamma: 0.5
+gamma: 0.8
 stepsize: 10000
 #power: 0.75
 
 display: 100
 max_iter: 50000
-snapshot: 1000
+snapshot: 5000
 snapshot_prefix: "result/deepid2"
 snapshot_diff: true
 

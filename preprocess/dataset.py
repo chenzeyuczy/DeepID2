@@ -60,7 +60,7 @@ class Dataset:
 if __name__ == '__main__':
 	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
 	dataset = Dataset(dataset_root)
-	split_ratio = 0.6
+	split_ratio = 1.0
 	dataset.split(split_ratio)
 	train_file = './data/train_set.txt'
 	test_file = './data/test_set.txt'
