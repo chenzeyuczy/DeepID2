@@ -4,8 +4,6 @@
 import numpy as np
 import setup, caffe
 
-from container import Container
-
 caffe.set_mode_gpu()
 
 model = "./model/solver.prototxt"

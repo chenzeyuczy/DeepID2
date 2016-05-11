@@ -4,16 +4,14 @@
 import numpy as np
 import setup, caffe
 
-from container import Container
-
 caffe.set_mode_gpu()
 
-model = "./model/solver.prototxt"
+model = "./model/solver_deepid.prototxt"
 solver = caffe.SGDSolver(model)
 
-last_iter_time = str(50000)
-weights = "./result/deepid2_iter_" + last_iter_time + ".caffemodel"
-state = "./result/deepid2_iter_" + last_iter_time + ".solverstate"
+last_iter_time = str(100000)
+weights = "./result/deepid_iter_" + last_iter_time + ".caffemodel"
+state = "./result/deepid_iter_" + last_iter_time + ".solverstate"
 solver.net.copy_from(weights)
 solver.restore(state)
 
