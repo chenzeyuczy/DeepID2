@@ -12,6 +12,7 @@ class Dataset:
 	def __len__(self):
 		return len(self.__info)
 
+	# Iterate file system.
 	def loadInfo(self):
 		self.__info = []
 		if self.__data_root:
@@ -28,6 +29,7 @@ class Dataset:
 				self.__info.append((folder, data_src))
 		return
 
+	# Divide dataset into two parts.
 	def split(self, ratio):
 		split_num = int(len(self) * ratio)
 		class_num = len(self.__info)
@@ -37,6 +39,7 @@ class Dataset:
 		print "Split into two parts with " + str(split_num) + " in train set and " + str(len(self) - split_num) + " in test set."
 		pass
 
+	# Export dataset into two seperate file.
 	def export(self, train_file = None, test_file = None):
 		# Assume that the dataset has been divided into seperate part.
 		with open(train_file, 'w') as f:

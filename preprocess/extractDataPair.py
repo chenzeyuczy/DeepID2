@@ -6,6 +6,7 @@ import os, random
 dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
 folders = sorted(os.listdir(dataset_root))
 
+# Iterate file system.
 print('Iterating dataset root...')
 file_info = []
 for folder in folders:
@@ -14,14 +15,17 @@ for folder in folders:
 	file_info.append(map(lambda x: folder_path + '/' + x, files))
 print('Done!')
 
+# Count sample and class number.
 num_class = len(file_info)
 num_sample = 0
 for i in xrange(num_class):
 	num_sample += len(file_info[i])
 
+# Set number of pairs of sample.
 num_same = num_sample
 num_diff = num_sample
 
+# Generate sample pairs.
 print('Generating sample pairs...')
 sample_same = []
 sample_diff = []
@@ -34,11 +38,13 @@ for i in xrange(num_diff):
 	sample1 = random.sample(file_info[idx1], 1)[0]
 	sample2 = random.sample(file_info[idx2], 1)[0]
 	sample_diff.append((sample1, idx1, sample2, idx2))
-	
+
+# Mix pairs of same class and those of various classes.	
 sample_mix = sample_same + sample_diff
 random.shuffle(sample_mix)
 print("Done!")
 
+# Save pair info to file.
 def savePair(pairs, output_path):
 	with open(output_path, 'w') as f:
 		for pair in pairs:
