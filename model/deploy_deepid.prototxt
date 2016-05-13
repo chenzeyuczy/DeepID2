@@ -1,13 +1,30 @@
-name: "deepid2"
+name: "deepid"
 layer {
 	name: "data"
 	type: "Python"
 	top: "data"
 	top: "label"
 	python_param {
-		module: "layer.data_layer_deepid"
+		module: "layer.data_layer_single"
 		layer: "DataLayer"
 		param_str: '{ "data_file": "./data/train_set.txt", "batch_size": 100 }'
+	}
+	include {
+		phase: TRAIN
+	}
+}
+layer {
+	name: "data"
+	type: "Python"
+	top: "data"
+	top: "label"
+	python_param {
+		module: "layer.data_layer_test"
+		layer: "DataLayer"
+		param_str: '{ "data_file": "./data/sample_mix.txt", "batch_size": 100 }'
+	}
+	include {
+		phase: TEST
 	}
 }
 
