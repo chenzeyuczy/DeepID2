@@ -21,7 +21,7 @@ layer {
 	python_param {
 		module: "layer.data_layer_test"
 		layer: "DataLayer"
-		param_str: '{ "data_file": "./data/sample_mix.txt", "batch_size": 100 }'
+		param_str: '{ "data_file": "./data/sample_mix_lfw.txt", "batch_size": 100 }'
 	}
 	include {
 		phase: TEST

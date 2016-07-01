@@ -3,7 +3,6 @@
 
 import caffe
 import numpy as np, json
-from container import Container
 
 class SplitLayer(caffe.Layer):
 

@@ -21,7 +21,7 @@ class Container():
 		return self
 
 	def next(self):
-		if self.__cur_idx + self.__batch_size / 2 >= self.__num_sample:
+		if self.__cur_idx + self.__batch_size / 2 > self.__num_sample:
 			raise StopIteration
 		data_list = []
 		labels = []

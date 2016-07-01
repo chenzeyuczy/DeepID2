@@ -20,9 +20,10 @@ def getPair(file_info, num_same = 0, num_diff = 0):
 	sample_same = []
 	sample_diff = []
 	for i in xrange(num_same):
-		idx = random.randrange(num_class)
-		sample1, sample2 = random.sample(file_info[idx], 2)
-		sample_same.append((sample1, idx, sample2, idx))
+		while True:
+			idx = random.randrange(num_class)
+			if len(file_info[idx]) > 1:
+				break
 	for i in xrange(num_diff):
 		idx1, idx2 = random.sample(range(num_class), 2)
 		sample1 = random.sample(file_info[idx1], 1)[0]
@@ -43,6 +44,7 @@ def savePair(pairs, output_path):
 		f.close()
 
 if __name__ == '__main__':
+#	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
 	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
 	print('Iterating file system...')
 	file_info = loadInfo(dataset_root)
@@ -55,7 +57,7 @@ if __name__ == '__main__':
 		num_sample += len(file_info[i])
 	print('%d classes with %d images found.' %(num_class, num_sample))
 
-	num_same = 10000
+	num_same = num_sample
 	num_diff = num_same
 
 	# Generate sample pairs.
@@ -63,9 +65,9 @@ if __name__ == '__main__':
 	sample_same, sample_diff, sample_mix = getPair(file_info, num_same, num_diff)
 	print('%d same-class pairs and %d diff-class pairs generated.' %(num_same, num_diff))
 
-	file_sample_same = 'sample_same.txt'
-	file_sample_diff = 'sample_diff.txt'
-	file_sample_mix = 'sample_mix.txt'
+	file_sample_same = 'data/sample_same.txt'
+	file_sample_diff = 'data/sample_diff.txt'
+	file_sample_mix = 'data/sample_mix.txt'
 
 	# Save pair info to file.
 	print('Saving sample pairs to file...')
