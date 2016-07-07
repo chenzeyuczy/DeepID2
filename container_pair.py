@@ -49,13 +49,16 @@ class Container():
 	def loadImage(self, img_path, size = None):
 		try:
 			img = Image.open(img_path)
-			img = np.array(img, dtype = np.float32)
 		except:
 			print "Error occur when trying to load", img_path
 			return None
+		# Resize image.
 		if size:
 			img = img.resize(size)
-		# Extend image dimension in case of gray mode.
+		else:
+			size = img.size
+		img = np.array(img, dtype = np.float32)
+		# Convert gray mode into RGB mode.
 		if len(img.shape) == 2:
 			w, h = img.shape
 			img_tem = np.empty((w, h, 3))
@@ -63,6 +66,10 @@ class Container():
 			img_tem[:,:,1] = img
 			img_tem[:,:,2] = img
 			img = img_tem
+
+#		patch_size = (100, 100)
+#		patch_w, patch_h = patch_size
+#		img = img[-patch_w:, 0:patch_h, :]
 		img = img.transpose(2, 0, 1)
 		return img
 

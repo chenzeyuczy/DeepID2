@@ -16,5 +16,7 @@ state = "./result/deepid2_iter_" + last_iter_time + ".solverstate"
 #solver.restore(state)
 
 for i in xrange(1000):
-	solver.step(100)
+	solver.step(1000)
+# Ensure testing run at the end.
+solver.step(1)
 

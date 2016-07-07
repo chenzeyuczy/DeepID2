@@ -195,7 +195,7 @@ layer {
 }
 
 layer {
-	name: "flatten_poo31"
+	name: "flatten_pool3"
 	type: "Flatten"
 	bottom: "pool3"
 	top: "flatten_pool3"
