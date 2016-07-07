@@ -10,28 +10,32 @@ def normalize(arr):
 	arrMax = np.amax(arr, axis = 0)
 	return (arr - arrMin) / (arrMax - arrMin)
 
-# Calculating cosine distance.
+# Calculate distance between feature.
 def getDist(feat1, feat2):
-	feat1 = feat1.flatten()
-	feat2 = feat2.flatten()
-	dist = 1 - feat1.dot(feat2) / feat1.dot(feat1.T) / feat2.dot(feat2.T)
-	return dist
+	pair_num = len(feat1)
+	import sklearn.metrics.pairwise as pw
+	mt = pw.pairwise_distances(feat1, feat2, metric='cosine')
+	distance = np.empty((pair_num,))
+	for i in xrange(pair_num):
+		distance[i] = mt[i,i]
+	return distance
 
+# Extract feature via network.
 def getFeat(model, weight):
 	# Load model file.
 	net = caffe.Net(model_file, caffe.TEST)
 	net.copy_from(weight_file)
-	
+
 	# Get data info.
 	param = json.loads(net.layers[0].param_str)
 	data_file = str(param["data_file"])
 	num_pair = int(os.popen('wc -l %s' %(data_file)).read().split()[0])
 	print('%d pairs to be evaluate.' %(num_pair))
-	
+
 	# Set testing parameters.
 	batch_size = net.blobs['data'].data.shape[0]
 	batch_num = num_pair * 2 / batch_size
-	
+
 	# Calculate DeepID features.
 	feat_all = None
 	label_all = None
@@ -55,18 +59,10 @@ def process(feature, labels):
 	num_pair = labels.size / 2
 	similarity = np.zeros((num_pair, 1), dtype = bool)
 	distance = np.zeros((num_pair, 1))
-	for i in xrange(num_pair):
-		feat1, feat2 = feature[2 * i: 2 * (i + 1),:]
-		label1, label2 = (labels[2 * i : 2 * (i + 1), 0]).astype(int)
-		sim = label1 == label2
-		print('Label1: %d, Label2: %d, Similarity: %s' %(label1, label2, sim))
-		feat1 = normalize(feat1)
-		feat2 = normalize(feat2)
-		dist = getDist(feat1, feat2)
-		print('Dist: %f' % (dist))
-		#dist = normalize(dist)
-		distance[i] = dist
-		similarity[i] = sim
+	feat1, feat2 = feature[::2, :], feature[1::2, :]
+	similarity = labels[::2, 0] == labels[1::2, 0]
+	distance = getDist(feat1, feat2)
+	print distance
 	return (distance, similarity)
 
 # Save feature and labels to file.
@@ -89,7 +85,7 @@ def loadData(filename):
 # Select threshold step by step in search of best accuracy.
 def calculateAccuracy(distance, sim):
 	pair_num = len(sim)
-	thld_min = 0.9
+	thld_min = 0.0
 	thld_max = 1.0
 	step = 0.0001
 	accuracy = 0.0
@@ -100,14 +96,14 @@ def calculateAccuracy(distance, sim):
 			predict = dist <= thld
 			if predict == sim[i]:
 				correct += 1
-			#print("%f %f %s" % (dist, thld, predict == sim[i])) 
+			#print("%f %f %s" % (dist, thld, predict == sim[i]))
 		acc = 1.0 * correct / pair_num
 		print('Threshold: %f, Accuracy: %f' % (thld, acc))
 		if accuracy < acc:
 			accuracy = acc
 			threshold = thld
 	return (accuracy, threshold)
-	
+
 
 if '__main__' == __name__:
 	RUN_AGAIN = False
