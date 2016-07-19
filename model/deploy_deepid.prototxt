@@ -19,7 +19,7 @@ layer {
 #	top: "data"
 #	top: "label"
 #	python_param {
-#		module: "layer.data_layer_test"
+#		module: "layer.data_layer_pair"
 #		layer: "DataLayer"
 #		param_str: '{ "data_file": "./data/sample_mix_lfw.txt", "batch_size": 100 }'
 #	}

@@ -4,7 +4,6 @@ layer {
 	type: "Python"
 	top: "data"
 	top: "label"
-	top: "pair"
 	python_param {
 		module: "layer.data_layer"
 		layer: "DataLayer"
@@ -317,7 +316,7 @@ layer {
 	name: "split"
 	type: "Python"
 	bottom: "deepid"
-	bottom: "pair"
+	bottom: "label"
 	top: "feat1"
 	top: "feat2"
 	top: "sim"

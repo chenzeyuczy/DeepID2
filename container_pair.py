@@ -66,10 +66,6 @@ class Container():
 			img_tem[:,:,1] = img
 			img_tem[:,:,2] = img
 			img = img_tem
-
-#		patch_size = (100, 100)
-#		patch_w, patch_h = patch_size
-#		img = img[-patch_w:, 0:patch_h, :]
 		img = img.transpose(2, 0, 1)
 		return img
 
