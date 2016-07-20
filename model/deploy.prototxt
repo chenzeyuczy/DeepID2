@@ -251,8 +251,8 @@ layer {
 layer {
 	name: "relu5"
 	type: "ReLU"
-	top: "deepid"
 	bottom: "deepid"
+	top: "deepid"
 }
 
 
@@ -339,7 +339,7 @@ layer {
 	contrastive_loss_param {
 		margin: 1
 	}
-	loss_weight: 0.05
+	loss_weight: 0.00001
 	include: {
 		phase: TRAIN
 	}

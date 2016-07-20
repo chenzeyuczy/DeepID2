@@ -50,7 +50,7 @@ class SplitLayer(caffe.Layer):
 
 		# Declare variables.
 		(batch_size, C) = data.shape
-		N = batch_size ／ 2
+		N = batch_size / 2
 		
 		diff = np.zeros((batch_size, C), dtype = np.float32)
 
