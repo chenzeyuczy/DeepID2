@@ -9,6 +9,23 @@ layer {
 		layer: "DataLayer"
 		param_str: '{ "data_file": "./data/sample_mix.txt", "batch_size": 100 }'
 	}
+	include: {
+		phase: TRAIN
+	}
+}
+layer {
+	name: "data"
+	type: "Python"
+	top: "data"
+	top: "label"
+	python_param {
+		module: "layer.data_layer"
+		layer: "DataLayer"
+		param_str: '{ "data_file": "./data/sample_mix_lfw.txt", "batch_size": 100 }'
+	}
+	include: {
+		phase: TEST
+	}
 }
 
 layer {
