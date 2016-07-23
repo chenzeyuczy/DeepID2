@@ -1,29 +1,29 @@
-name: "deepid2"
+name: "deepid"
 layer {
 	name: "data"
-	type: "Data"
+	type: "Python"
 	top: "data"
 	top: "label"
-	data_param {
-		source: "/home/chenzeyu/dataset/CASIA/CASIA-lmdb"
-		batch_size: 100
-		backend: LMDB
+	python_param {
+		module: "layer.data_layer_single"
+		layer: "DataLayer"
+		param_str: '{ "data_file": "./data/train_set.txt", "batch_size": 100 }'
 	}
-	include: {
+	include {
 		phase: TRAIN
 	}
 }
 layer {
 	name: "data"
-	type: "Data"
+	type: "Python"
 	top: "data"
 	top: "label"
-	data_param {
-		source: "/home/chenzeyu/dataset/lfw/lfw-lmdb"
-		batch_size: 100
-		backend: LMDB
+	python_param {
+		module: "layer.data_layer"
+		layer: "DataLayer"
+		param_str: '{ "data_file": "./data/sample_mix_lfw.txt", "batch_size": 100 }'
 	}
-	include: {
+	include {
 		phase: TEST
 	}
 }
@@ -195,38 +195,15 @@ layer {
 }
 
 layer {
-	name: "lrn1"
-	type: "LRN"
-	top: "norm1"
-	bottom: "pool3"
-	lrn_param {
-		local_size: 5
-		alpha: 0.0001
-		beta: 0.75
-	}
-}
-layer {
-	name: "lrn2"
-	type: "LRN"
-	top: "norm2"
-	bottom: "conv4"
-	lrn_param {
-		local_size: 5
-		alpha: 0.0001
-		beta: 0.75
-	}
-}
-
-layer {
 	name: "flatten_pool3"
 	type: "Flatten"
-	bottom: "norm1"
+	bottom: "pool3"
 	top: "flatten_pool3"
 }
 layer {
 	name: "flatten_conv4"
 	type: "Flatten"
-	bottom: "norm2"
+	bottom: "conv4"
 	top: "flatten_conv4"
 }
 layer {
@@ -239,6 +216,7 @@ layer {
 		axis: 1
 	}
 }
+
 
 layer {
 	name: "deepid"
@@ -268,10 +246,9 @@ layer {
 layer {
 	name: "relu5"
 	type: "ReLU"
-	bottom: "deepid"
 	top: "deepid"
+	bottom: "deepid"
 }
-
 
 layer {
 	name: "fc"
@@ -304,6 +281,9 @@ layer {
 	type: "Softmax"
 	bottom: "fc"
 	top: "id"
+#	include: {
+#		phase: TEST
+#	}
 }
 
 layer {
@@ -324,39 +304,6 @@ layer {
 	bottom: "label"
 	top: "loss"
 	loss_weight: 1
-	include: {
-		phase: TRAIN
-	}
-}
-
-layer {
-	name: "split"
-	type: "Python"
-	bottom: "deepid"
-	bottom: "label"
-	top: "feat1"
-	top: "feat2"
-	top: "sim"
-	python_param {
-		module: "layer.split_layer"
-		layer: "SplitLayer"
-	}
-	include: {
-		phase: TRAIN
-	}
-}
-
-layer {
-	name: "contrastive"
-	type: "ContrastiveLoss"
-	bottom: "feat1"
-	bottom: "feat2"
-	bottom: "sim"
-	top: "contrastive_loss"
-	contrastive_loss_param {
-		margin: 1
-	}
-	loss_weight: 0.00001
 	include: {
 		phase: TRAIN
 	}

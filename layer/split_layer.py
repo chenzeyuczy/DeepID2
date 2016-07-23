@@ -28,6 +28,7 @@ class SplitLayer(caffe.Layer):
 		data2 = np.empty((N, C), dtype = np.float32)
 		# Get similarity of each pair.
 		sim = labels[::2] == labels[1::2]
+		sim = sim.reshape(N, 1)
 
 		data1 = data[::2]
 		data2 = data[1::2]

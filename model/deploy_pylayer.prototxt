@@ -1,13 +1,13 @@
 name: "deepid2"
 layer {
 	name: "data"
-	type: "Data"
+	type: "Python"
 	top: "data"
 	top: "label"
-	data_param {
-		source: "/home/chenzeyu/dataset/CASIA/CASIA-lmdb"
-		batch_size: 100
-		backend: LMDB
+	python_param {
+		module: "layer.data_layer"
+		layer: "DataLayer"
+		param_str: '{ "data_file": "./data/sample_mix.txt", "batch_size": 100 }'
 	}
 	include: {
 		phase: TRAIN
@@ -15,13 +15,13 @@ layer {
 }
 layer {
 	name: "data"
-	type: "Data"
+	type: "Python"
 	top: "data"
 	top: "label"
-	data_param {
-		source: "/home/chenzeyu/dataset/lfw/lfw-lmdb"
-		batch_size: 100
-		backend: LMDB
+	python_param {
+		module: "layer.data_layer"
+		layer: "DataLayer"
+		param_str: '{ "data_file": "./data/sample_mix_lfw.txt", "batch_size": 100 }'
 	}
 	include: {
 		phase: TEST
