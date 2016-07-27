@@ -10,7 +10,7 @@ def loadInfo(dataset_root):
 	for folder in folders:
 		folder_path = dataset_root + '/' + folder
 		files = sorted(os.listdir(folder_path))
-		file_info.append(map(lambda x: folder_path + '/' + x, files))
+		file_info.append(map(lambda x: folder + '/' + x, files))
 	return file_info
 
 # Generate sample pairs.
@@ -41,13 +41,15 @@ def getPair(file_info, num_same = 0, num_diff = 0):
 def savePair(pairs, output_path):
 	with open(output_path, 'w') as f:
 		for pair in pairs:
-			line = ' '.join(map(str, pair)) + '\n'
+			line = ' '.join(map(str, pair[:2])) + '\n'
+			f.write(line)
+			line = ' '.join(map(str, pair[2:])) + '\n'
 			f.write(line)
 		f.close()
 
 if __name__ == '__main__':
-#	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
-	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
+	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
+#	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
 	print('Iterating file system...')
 	file_info = loadInfo(dataset_root)
 	print('Done!')
@@ -60,7 +62,7 @@ if __name__ == '__main__':
 	print('%d classes with %d images found.' %(num_class, num_sample))
 
 	# Set pair number.
-	num_same = num_sample
+	num_same = 3000
 	num_diff = num_same
 
 	# Generate sample pairs.
@@ -69,9 +71,9 @@ if __name__ == '__main__':
 	print('%d same-class pairs and %d diff-class pairs generated.' %(num_same, num_diff))
 
 	# Set output file.
-	file_sample_same = 'data/sample_same.txt'
-	file_sample_diff = 'data/sample_diff.txt'
-	file_sample_mix = 'data/sample_mix.txt'
+	file_sample_same = 'data/sample_same_lfw.txt'
+	file_sample_diff = 'data/sample_diff_lfw.txt'
+	file_sample_mix = 'data/sample_mix_lfw.txt'
 
 	# Save pair info to file.
 	print('Saving sample pairs to file...')

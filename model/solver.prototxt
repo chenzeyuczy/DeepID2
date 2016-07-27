@@ -13,8 +13,8 @@ stepsize: 40000
 #power: 0.75
 
 display: 100
-max_iter: 50000
-snapshot: 5000
+max_iter: 300000
+snapshot: 10000
 snapshot_prefix: "result/deepid2"
 snapshot_diff: true
 

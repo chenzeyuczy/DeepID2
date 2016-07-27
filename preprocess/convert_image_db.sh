@@ -7,16 +7,16 @@ BACKEND=lmdb
 GRAY=false
 HEIGHT=150
 WIDTH=150
-SHUFFLE=true
+SHUFFLE=false
 OPTION="-backend=${BACKEND} -gray=${GRAY} -resize_height=${HEIGHT} -resize_width=${WIDTH}"
 if [ $SHUFFLE == true ]; then
 	OPTION="${OPTION} --shuffle"
 fi
 
-DATASET=CASIA
+DATASET=lfw
 ROOT_FOLDER=/home/chenzeyu/dataset/$DATASET/$DATASET-cropped/
-LISTFILE=./data/$DATASET.txt
-DB_NAME=/home/chenzeyu/dataset/$DATASET/$DATASET-lmdb/
+LISTFILE=./data/sample_mix_$DATASET.txt
+DB_NAME=/home/chenzeyu/dataset/$DATASET/$DATASET-test-lmdb/
 
 rm -r $DB_NAME
 

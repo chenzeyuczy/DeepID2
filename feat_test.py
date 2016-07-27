@@ -2,6 +2,8 @@
 #-*- coding:utf-8 -*-
 
 import numpy as np, json, os, pickle
+import lmdb
+from google.protobuf import text_format
 
 def normalize(arr):
 	arr = arr.astype(np.float32)
@@ -26,11 +28,17 @@ def getFeat(model, weight):
 	# Load model file.
 	net = caffe.Net(model_file, caffe.TEST)
 	net.copy_from(weight_file)
+	
+	# Read lmdb file.
+	net_config = caffe.proto.caffe_pb2.NetParameter()
+	with open(model_file, 'r') as f:
+		text_format.Merge(str(f.read()), net_config)
+		f.close()
+	lmdb_file = net_config.layer[1].data_param.source
 
-	# Get data info.
-	param = json.loads(net.layers[0].param_str)
-	data_file = str(param["data_file"])
-	num_pair = int(os.popen('wc -l %s' %(data_file)).read().split()[0])
+	env = lmdb.open(lmdb_file, readonly=False)
+	num_pair = env.stat()['entries'] / 2
+	env.close()
 	print('%d pairs to be evaluate.' %(num_pair))
 
 	# Set testing parameters.
@@ -62,7 +70,7 @@ def process(feature, labels):
 	similarity = np.zeros((num_pair, 1), dtype = bool)
 	distance = np.zeros((num_pair, 1))
 	feat1, feat2 = feature[::2, :], feature[1::2, :]
-	similarity = labels[::2, 0] == labels[1::2, 0]
+	similarity = labels[::2] == labels[1::2]
 	distance = getDist(feat1, feat2, 'cosine')
 	distance = normalize(distance)
 	print distance
@@ -112,8 +120,8 @@ if '__main__' == __name__:
 	RUN_AGAIN = True
 	data_file = './test/feature.pkl'
 	if RUN_AGAIN:
-		model_file = 'model/deploy_deepid.prototxt'
-		weight_file = 'result/deepid_iter_100000.caffemodel'
+		model_file = 'model/deploy.prototxt'
+		weight_file = 'result/deepid2_iter_1000000.caffemodel'
 		feat, labels = getFeat(model_file, weight_file)
 		saveData(feat, labels, data_file)
 	feat, labels = loadData(data_file)

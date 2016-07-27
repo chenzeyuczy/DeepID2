@@ -19,7 +19,7 @@ layer {
 	top: "data"
 	top: "label"
 	data_param {
-		source: "/home/chenzeyu/dataset/lfw/lfw-lmdb"
+		source: "/home/chenzeyu/dataset/lfw/lfw-test-lmdb"
 		batch_size: 100
 		backend: LMDB
 	}
