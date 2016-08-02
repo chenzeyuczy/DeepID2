@@ -48,8 +48,8 @@ def savePair(pairs, output_path):
 		f.close()
 
 if __name__ == '__main__':
-	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
-#	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
+#	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
+	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
 	print('Iterating file system...')
 	file_info = loadInfo(dataset_root)
 	print('Done!')
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 	print('%d classes with %d images found.' %(num_class, num_sample))
 
 	# Set pair number.
-	num_same = 3000
+	num_same = num_sample
 	num_diff = num_same
 
 	# Generate sample pairs.
@@ -71,9 +71,9 @@ if __name__ == '__main__':
 	print('%d same-class pairs and %d diff-class pairs generated.' %(num_same, num_diff))
 
 	# Set output file.
-	file_sample_same = 'data/sample_same_lfw.txt'
-	file_sample_diff = 'data/sample_diff_lfw.txt'
-	file_sample_mix = 'data/sample_mix_lfw.txt'
+	file_sample_same = 'data/sample_same_CASIA.txt'
+	file_sample_diff = 'data/sample_diff_CASIA.txt'
+	file_sample_mix = 'data/sample_mix_CASIA.txt'
 
 	# Save pair info to file.
 	print('Saving sample pairs to file...')

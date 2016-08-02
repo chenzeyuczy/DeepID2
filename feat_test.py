@@ -94,7 +94,6 @@ def loadData(filename):
 		f.close()
 	return (feat, labels)
 
-
 # Select threshold step by step in search of best accuracy.
 def calculateAccuracy(distance, sim):
 	pair_num = len(sim)

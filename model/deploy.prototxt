@@ -194,39 +194,41 @@ layer {
 	bottom: "conv4"
 }
 
-layer {
-	name: "lrn1"
-	type: "LRN"
-	top: "norm1"
-	bottom: "pool3"
-	lrn_param {
-		local_size: 5
-		alpha: 0.0001
-		beta: 0.75
-	}
-}
-layer {
-	name: "lrn2"
-	type: "LRN"
-	top: "norm2"
-	bottom: "conv4"
-	lrn_param {
-		local_size: 5
-		alpha: 0.0001
-		beta: 0.75
-	}
-}
+#layer {
+#	name: "lrn1"
+#	type: "LRN"
+#	top: "norm1"
+#	bottom: "pool3"
+#	lrn_param {
+#		local_size: 5
+#		alpha: 0.0001
+#		beta: 0.75
+#	}
+#}
+#layer {
+#	name: "lrn2"
+#	type: "LRN"
+#	top: "norm2"
+#	bottom: "conv4"
+#	lrn_param {
+#		local_size: 5
+#		alpha: 0.0001
+#		beta: 0.75
+#	}
+#}
 
 layer {
 	name: "flatten_pool3"
 	type: "Flatten"
-	bottom: "norm1"
+#	bottom: "norm1"
+	bottom: "pool3"
 	top: "flatten_pool3"
 }
 layer {
 	name: "flatten_conv4"
 	type: "Flatten"
-	bottom: "norm2"
+#	bottom: "norm2"
+	bottom: "conv4"
 	top: "flatten_conv4"
 }
 layer {

@@ -274,6 +274,9 @@ layer {
 			value: 0
 		}
 	}
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
@@ -281,9 +284,9 @@ layer {
 	type: "Softmax"
 	bottom: "fc"
 	top: "id"
-#	include: {
-#		phase: TEST
-#	}
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
@@ -292,9 +295,9 @@ layer {
 	bottom: "id"
 	bottom: "label"
 	top: "accuracy"
-#	include: {
-#		phase: TEST
-#	}
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
