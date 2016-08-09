@@ -9,6 +9,8 @@ def loadInfo(dataset_root):
 	file_info = []
 	for folder in folders:
 		folder_path = dataset_root + '/' + folder
+		if not os.path.isdir(folder_path):
+			continue
 		files = sorted(os.listdir(folder_path))
 		file_info.append(map(lambda x: folder + '/' + x, files))
 	return file_info
@@ -48,8 +50,7 @@ def savePair(pairs, output_path):
 		f.close()
 
 if __name__ == '__main__':
-#	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
-	dataset_root = '/home/chenzeyu/dataset/CASIA/CASIA-cropped'
+	dataset_root = '/home/chenzeyu/dataset/lfw/lfw-cropped'
 	print('Iterating file system...')
 	file_info = loadInfo(dataset_root)
 	print('Done!')
@@ -71,9 +72,10 @@ if __name__ == '__main__':
 	print('%d same-class pairs and %d diff-class pairs generated.' %(num_same, num_diff))
 
 	# Set output file.
-	file_sample_same = 'data/sample_same_CASIA.txt'
-	file_sample_diff = 'data/sample_diff_CASIA.txt'
-	file_sample_mix = 'data/sample_mix_CASIA.txt'
+	dataset_name = 'lfw'
+	file_sample_same = 'data/sample_same_' + dataset_name + '.txt'
+	file_sample_diff = 'data/sample_diff_' + dataset_name + '.txt'
+	file_sample_mix = 'data/sample_mix_' + dataset_name + '.txt'
 
 	# Save pair info to file.
 	print('Saving sample pairs to file...')

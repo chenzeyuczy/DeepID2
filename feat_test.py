@@ -13,10 +13,10 @@ def normalize(arr):
 
 # Calculate distance between feature.
 # Alternative metric: cityblock, cosine, euclidean, l1, l2 and manhattan.
-def getDist(feat1, feat2, method):
+def getDist(feat1, feat2, metric):
 	pair_num = len(feat1)
 	import sklearn.metrics.pairwise as pw
-	mt = pw.pairwise_distances(feat1, feat2, metric=method)
+	mt = pw.pairwise_distances(feat1, feat2, metric=metric)
 	distance = np.empty((pair_num,))
 	for i in xrange(pair_num):
 		distance[i] = mt[i,i]
@@ -28,7 +28,7 @@ def getFeat(model, weight):
 	# Load model file.
 	net = caffe.Net(model_file, caffe.TEST)
 	net.copy_from(weight_file)
-	
+
 	# Read lmdb file.
 	net_config = caffe.proto.caffe_pb2.NetParameter()
 	with open(model_file, 'r') as f:
@@ -64,14 +64,14 @@ def getFeat(model, weight):
 			label_all = label
 	return (feat_all, label_all)
 
-def process(feature, labels):
+def process(feature, labels, metric):
 	print('Computing distance...')
 	num_pair = labels.size / 2
 	similarity = np.zeros((num_pair, 1), dtype = bool)
 	distance = np.zeros((num_pair, 1))
 	feat1, feat2 = feature[::2, :], feature[1::2, :]
 	similarity = labels[::2] == labels[1::2]
-	distance = getDist(feat1, feat2, 'cosine')
+	distance = getDist(feat1, feat2, metric)
 	distance = normalize(distance)
 	print distance
 	return (distance, similarity)
@@ -116,15 +116,33 @@ def calculateAccuracy(distance, sim):
 
 
 if '__main__' == __name__:
-	RUN_AGAIN = True
-	data_file = './test/feature.pkl'
+	patch_num = 5
+	iter_time = 200000
+	metric = 'euclidean'
+	RUN_AGAIN = False
+
+	# Calculate features.
 	if RUN_AGAIN:
-		model_file = 'model/deploy.prototxt'
-		weight_file = 'result/deepid2_iter_1000000.caffemodel'
-		feat, labels = getFeat(model_file, weight_file)
-		saveData(feat, labels, data_file)
-	feat, labels = loadData(data_file)
-	dist, sim = process(feat, labels)
+		for i in xrange(patch_num + 1):
+			data_file = './test/feature_patch' + str(i) + '_iter' + str(iter_time) + '.pkl'
+			model_file = './model/deploy_patch' + str(i) + '.prototxt'
+			weight_file = './result/deepid2_patch' + str(i) + '_iter_' + str(iter_time) + '.caffemodel'
+			if i == 0:
+				weight_file = './result/deepid2_iter_' + str(iter_time) + '.caffemodel'
+			feat, labels = getFeat(model_file, weight_file)
+			saveData(feat, labels, data_file)
+
+	# Load data file files.
+	feature = None
+	for i in xrange(patch_num + 1):
+		data_file = './test/feature_patch' + str(i) + '_iter' + str(iter_time) + '.pkl'
+		feat, labels = loadData(data_file)
+		if feature == None:
+			feature = feat
+		else:
+			feature = np.append(feature, feat, axis=1)
+
+	dist, sim = process(feature, labels, metric)
 	acc, thld = calculateAccuracy(dist, sim)
 	print('Best performance: %f, with threshold %f ' % (acc, thld))
 

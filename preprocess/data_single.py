@@ -5,15 +5,19 @@ import os
 
 # Iterate file system.
 def loadInfo(dataset_root):
+	print "Searching files in", dataset_root
 	folders = sorted(os.listdir(dataset_root))
 	file_info = []
 	for folder in folders:
 		folder_path = dataset_root + '/' + folder
+		if not os.path.isdir(folder_path):
+			continue
 		files = sorted(os.listdir(folder_path))
 		file_info.append(map(lambda x: folder_path + '/' + x, files))
 	return file_info
 
 def saveFileInfo(file_list, output_path):
+	print "Writing file info to", output_path
 	with open(output_path, 'w') as f:
 		label = 0
 		for filenames in file_list:

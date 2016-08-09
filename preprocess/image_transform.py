@@ -35,6 +35,7 @@ def check_image(root_path, file_list, img_size, img_mode):
 
 def transform_image(src_root, dst_root, file_list, config):
 	img_box, img_mode, img_flip = config
+	print "Transforming images from %s to %s." % (src_root, dst_root)
 
 	for file_path in file_list:
 		src_path = src_root + '/' + file_path
@@ -45,8 +46,10 @@ def transform_image(src_root, dst_root, file_list, config):
 			os.makedirs(dst_dir)
 
 		img = Image.open(src_path)
-		img = img.convert(img_mode)
-		img = img.crop(img_box)
+		if img_mode:
+			img = img.convert(img_mode)
+		if img_box:
+			img = img.crop(img_box)
 		if img_flip == True:
 			img = img.flip(Image.FLIP_LEFT_RIGHT)
 		img.save(dst_path)
@@ -79,7 +82,7 @@ if __name__ == '__main__':
 		config_str = '_'.join(map(str, box)) + '_' + mode
 		if flip:
 			config_str += "FLIP"
-		dst_root = '_'.join(['/home/chenzeyu/dataset/CASIA/CASIA', config_str])
+		dst_root = '_'.join(['/home/chenzeyu/dataset/CASIA/CASIA-cropped', config_str])
 		print("Saving files to %s." % (dst_root))
 		transform_image(root_path, dst_root, file_list, config)
 	
