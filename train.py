@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 import numpy as np
-import setup, caffe
+import caffe
 
 caffe.set_mode_gpu()
 
@@ -15,7 +15,7 @@ state = "./result/deepid2_iter_" + last_iter_time + ".solverstate"
 #solver.net.copy_from(weights)
 #solver.restore(state)
 
-for i in xrange(1000):
+for i in xrange(400):
 	solver.step(1000)
 # Ensure testing run at the end.
 solver.step(1)

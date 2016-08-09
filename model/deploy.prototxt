@@ -31,8 +31,8 @@ layer {
 layer {
 	name: "conv1"
 	type: "Convolution"
-	top: "conv1"
 	bottom: "data"
+	top: "conv1"
 	param {
 		lr_mult: 1
 		decay_mult: 1
@@ -64,8 +64,8 @@ layer {
 layer {
 	name: "pool1"
 	type: "Pooling"
-	top: "pool1"
 	bottom: "conv1"
+	top: "pool1"
 	pooling_param {
 		pool: MAX
 		kernel_size: 2
@@ -75,8 +75,8 @@ layer {
 layer {
 	name: "conv2"
 	type: "Convolution"
-	top: "conv2"
 	bottom: "pool1"
+	top: "conv2"
 	param {
 		lr_mult: 1
 		decay_mult: 1
@@ -102,14 +102,14 @@ layer {
 layer {
 	name: "relu2"
 	type: "ReLU"
-	top: "conv2"
 	bottom: "conv2"
+	top: "conv2"
 }
 layer {
 	name: "pool2"
 	type: "Pooling"
-	top: "pool2"
 	bottom: "conv2"
+	top: "pool2"
 	pooling_param {
 		pool: MAX
 		kernel_size: 2
@@ -119,8 +119,8 @@ layer {
 layer {
 	name: "conv3"
 	type: "Convolution"
-	top: "conv3"
 	bottom: "pool2"
+	top: "conv3"
 	param {
 		lr_mult: 1
 		decay_mult: 1
@@ -146,14 +146,14 @@ layer {
 layer {
 	name: "relu3"
 	type: "ReLU"
-	top: "conv3"
 	bottom: "conv3"
+	top: "conv3"
 }
 layer {
 	name: "pool3"
 	type: "Pooling"
-	top: "pool3"
 	bottom: "conv3"
+	top: "pool3"
 	pooling_param {
 		pool: MAX
 		kernel_size: 2
@@ -163,8 +163,8 @@ layer {
 layer {
 	name: "conv4"
 	type: "Convolution"
-	top: "conv4"
 	bottom: "pool3"
+	top: "conv4"
 	param {
 		lr_mult: 1
 		decay_mult: 1
@@ -190,45 +190,20 @@ layer {
 layer {
 	name: "relu4"
 	type: "ReLU"
-	top: "conv4"
 	bottom: "conv4"
+	top: "conv4"
 }
-
-#layer {
-#	name: "lrn1"
-#	type: "LRN"
-#	top: "norm1"
-#	bottom: "pool3"
-#	lrn_param {
-#		local_size: 5
-#		alpha: 0.0001
-#		beta: 0.75
-#	}
-#}
-#layer {
-#	name: "lrn2"
-#	type: "LRN"
-#	top: "norm2"
-#	bottom: "conv4"
-#	lrn_param {
-#		local_size: 5
-#		alpha: 0.0001
-#		beta: 0.75
-#	}
-#}
 
 layer {
 	name: "flatten_pool3"
 	type: "Flatten"
-#	bottom: "norm1"
 	bottom: "pool3"
 	top: "flatten_pool3"
 }
 layer {
 	name: "flatten_conv4"
-	type: "Flatten"
-#	bottom: "norm2"
 	bottom: "conv4"
+	type: "Flatten"
 	top: "flatten_conv4"
 }
 layer {
@@ -299,6 +274,9 @@ layer {
 			value: 0
 		}
 	}
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
@@ -306,6 +284,9 @@ layer {
 	type: "Softmax"
 	bottom: "fc"
 	top: "id"
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {
@@ -314,9 +295,9 @@ layer {
 	bottom: "id"
 	bottom: "label"
 	top: "accuracy"
-#	include: {
-#		phase: TEST
-#	}
+	include: {
+		phase: TRAIN
+	}
 }
 
 layer {

@@ -24,7 +24,7 @@ def getDist(feat1, feat2, method):
 
 # Extract feature via network.
 def getFeat(model, weight):
-	import setup, caffe
+	import caffe
 	# Load model file.
 	net = caffe.Net(model_file, caffe.TEST)
 	net.copy_from(weight_file)

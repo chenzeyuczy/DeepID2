@@ -1,7 +1,7 @@
 net: "model/deploy_deepid.prototxt"
 
-test_iter: 300
-test_interval: 5000
+#test_iter: 300
+#test_interval: 5000
 
 base_lr: 0.001
 momentum: 0.9
