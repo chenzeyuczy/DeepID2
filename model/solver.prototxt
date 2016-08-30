@@ -13,9 +13,9 @@ stepsize: 40000
 #power: 0.75
 
 display: 100
-max_iter: 300000
-snapshot: 10000
-snapshot_prefix: "result/deepid2"
+max_iter: 1000000
+snapshot: 50000
+snapshot_prefix: "result/deepid2_dropout_fix"
 snapshot_diff: true
 
 solver_mode: GPU

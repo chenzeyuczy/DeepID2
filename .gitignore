@@ -17,3 +17,6 @@ test/
 # Model data
 *.caffemodel
 *.solverstate
+
+*_patch*.prototxt
+
