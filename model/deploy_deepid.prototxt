@@ -280,19 +280,9 @@ layer {
 }
 
 layer {
-	name: "id"
-	type: "Softmax"
-	bottom: "fc"
-	top: "id"
-	include: {
-		phase: TRAIN
-	}
-}
-
-layer {
 	name: "accuracy"
 	type: "Accuracy"
-	bottom: "id"
+	bottom: "fc"
 	bottom: "label"
 	top: "accuracy"
 	include: {

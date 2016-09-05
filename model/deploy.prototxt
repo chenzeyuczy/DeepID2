@@ -5,7 +5,7 @@ layer {
 	top: "data"
 	top: "label"
 	data_param {
-		source: "/home/chenzeyu/dataset/CASIA/CASIA-lmdb"
+		source: "/home/chenzeyu/dataset/CASIA/CASIA_55_47-lmdb"
 		batch_size: 100
 		backend: LMDB
 	}
@@ -19,7 +19,7 @@ layer {
 	top: "data"
 	top: "label"
 	data_param {
-		source: "/home/chenzeyu/dataset/lfw/lfw-test-lmdb"
+		source: "/home/chenzeyu/dataset/lfw/lfw_55_47-lmdb"
 		batch_size: 100
 		backend: LMDB
 	}
@@ -58,13 +58,24 @@ layer {
 layer {
 	name: "relu1"
 	type: "ReLU"
-	top: "conv1"
 	bottom: "conv1"
+	top: "conv1"
+}
+layer {
+	name: "norm1"
+	type: "LRN"
+	bottom: "conv1"
+	top: "norm1"
+	lrn_param {
+		local_size: 5
+		alpha: 0.0001
+		beta: 0.75
+	}
 }
 layer {
 	name: "pool1"
 	type: "Pooling"
-	bottom: "conv1"
+	bottom: "norm1"
 	top: "pool1"
 	pooling_param {
 		pool: MAX
@@ -106,9 +117,20 @@ layer {
 	top: "conv2"
 }
 layer {
+	name: "norm2"
+	type: "LRN"
+	bottom: "conv2"
+	top: "norm2"
+	lrn_param {
+		local_size: 5
+		alpha: 0.0001
+		beta: 0.75
+	}
+}
+layer {
 	name: "pool2"
 	type: "Pooling"
-	bottom: "conv2"
+	bottom: "norm2"
 	top: "pool2"
 	pooling_param {
 		pool: MAX
@@ -202,8 +224,8 @@ layer {
 }
 layer {
 	name: "flatten_conv4"
-	bottom: "conv4"
 	type: "Flatten"
+	bottom: "conv4"
 	top: "flatten_conv4"
 }
 layer {
@@ -249,10 +271,23 @@ layer {
 	top: "deepid"
 }
 
+#layer {
+#	name: "dropout"
+#	type: "Dropout"
+#	bottom: "deepid"
+#	top: "dropout"
+#	dropout_param {
+#		dropout_ratio: 0.4
+#	}
+#	include: {
+#		phase: TRAIN
+#	}
+#}
 
 layer {
 	name: "fc"
 	type: "InnerProduct"
+#	bottom: "dropout"
 	bottom: "deepid"
 	top: "fc"
 	param {
@@ -279,20 +314,11 @@ layer {
 	}
 }
 
-layer {
-	name: "id"
-	type: "Softmax"
-	bottom: "fc"
-	top: "id"
-	include: {
-		phase: TRAIN
-	}
-}
 
 layer {
 	name: "accuracy"
 	type: "Accuracy"
-	bottom: "id"
+	bottom: "fc"
 	bottom: "label"
 	top: "accuracy"
 	include: {

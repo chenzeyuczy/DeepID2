@@ -10,7 +10,7 @@ ITERATION=1000000
 #SNAPSHOT=result/deepid2_dropout_iter_500000.solverstate
 
 OPTION="-solver ${SOLVER} -iterations ${ITERATION}"
-INFO=_dropout_fix
+INFO=_55_47
 
 if [[ -n "${SNAPSHOT}" ]]; then
 	OPTION="${OPTION} -snapshot ${SNAPSHOT}"

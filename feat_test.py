@@ -117,30 +117,40 @@ def calculateAccuracy(distance, sim):
 
 if '__main__' == __name__:
 	patch_num = 5
-	iter_time = 200000
+	iter_time = 1000000
 	metric = 'euclidean'
 	RUN_AGAIN = False
 
 	# Calculate features.
 	if RUN_AGAIN:
-		for i in xrange(patch_num + 1):
-			data_file = './test/feature_patch' + str(i) + '_iter' + str(iter_time) + '.pkl'
-			model_file = './model/deploy_patch' + str(i) + '.prototxt'
-			weight_file = './result/deepid2_patch' + str(i) + '_iter_' + str(iter_time) + '.caffemodel'
-			if i == 0:
-				weight_file = './result/deepid2_iter_' + str(iter_time) + '.caffemodel'
-			feat, labels = getFeat(model_file, weight_file)
-			saveData(feat, labels, data_file)
+#		for i in xrange(patch_num + 1):
+#			data_file = './test/feature_patch' + str(i) + '_iter' + str(iter_time) + '.pkl'
+#			model_file = './model/deploy_patch' + str(i) + '.prototxt'
+#			weight_file = './result/deepid2_patch' + str(i) + '_iter_' + str(iter_time) + '.caffemodel'
+#			if i == 0:
+#				weight_file = './result/deepid2_iter_' + str(iter_time) + '.caffemodel'
+#			feat, labels = getFeat(model_file, weight_file)
+#			saveData(feat, labels, data_file)
 
-	# Load data file files.
-	feature = None
-	for i in xrange(patch_num + 1):
-		data_file = './test/feature_patch' + str(i) + '_iter' + str(iter_time) + '.pkl'
-		feat, labels = loadData(data_file)
-		if feature == None:
-			feature = feat
-		else:
-			feature = np.append(feature, feat, axis=1)
+		data_file = './test/feature_55_47_' + str(iter_time) + '.pkl'
+		model_file = './model/deploy.prototxt'
+		weight_file = './result/deepid2_55_47_iter_' + str(iter_time) + '.caffemodel'
+		feat, labels = getFeat(model_file, weight_file)
+		saveData(feat, labels, data_file)
+
+	# Load data from files.
+#	feature = None
+#	for i in xrange(patch_num + 1):
+#		data_file = './test/feature_patch' + str(i) + '_iter' + str(iter_time) + '.pkl'
+#		feat, labels = loadData(data_file)
+#		if feature == None:
+#			feature = feat
+#		else:
+#			feature = np.append(feature, feat, axis=1)
+
+	data_file = './test/feature_' + str(iter_time) + '.pkl'
+	data_file = './test/feature_55_47_' + str(iter_time) + '.pkl'
+	feature, labels = loadData(data_file)
 
 	dist, sim = process(feature, labels, metric)
 	acc, thld = calculateAccuracy(dist, sim)
